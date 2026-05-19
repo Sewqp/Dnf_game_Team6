@@ -17,10 +17,12 @@ classDiagram
 
     class 전사 {
         +스킬발동() double
+        %% 검 휘두르기 → 데미지 = 공격력 * 1.5
     }
 
     class 마법사 {
         +스킬발동() double
+        %% 파이어볼 → 데미지 = 공격력 * 2.0
     }
 
     class 전투 {
