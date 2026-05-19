@@ -1,33 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.dnf.*" %>
+<%@ page import="com.dnf.Character, com.dnf.Battle, com.dnf.Warrior, com.dnf.Mage, com.dnf.Player" %>
 <%
-    String 결과 = null;
-    String 캐릭터정보 = null;
+    String result = null;
+    String charInfo = null;
 
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        String 플레이어id = request.getParameter("플레이어id");
-        String 캐릭터명   = request.getParameter("캐릭터명");
-        String 직업       = request.getParameter("직업");
-        String 레벨str    = request.getParameter("레벨");
+        String playerId = request.getParameter("playerId");
+        String charName = request.getParameter("charName");
+        String job      = request.getParameter("job");
+        String levelStr = request.getParameter("level");
 
-        int 레벨 = 1;
-        try { 레벨 = Integer.parseInt(레벨str); } catch (Exception e) {}
+        int level = 1;
+        try { level = Integer.parseInt(levelStr); } catch (Exception e) {}
 
-        전투 전투obj = new 전투();
-        캐릭터 c = 전투obj.캐릭터생성(플레이어id, 캐릭터명, 직업, 레벨);
+        Battle battle = new Battle();
+        Character c = battle.createCharacter(playerId, charName, job, level);
 
         if (c != null) {
-            결과 = "캐릭터 생성 성공";
-            캐릭터정보 = "이름: " + c.get캐릭터명()
-                      + " | 직업: " + c.get직업()
-                      + " | 레벨: " + c.get레벨()
-                      + " | HP: " + c.getHP()
-                      + " | 공격력: " + (int) c.get공격력();
-            // 세션에 캐릭터 저장 (공격 화면에서 사용)
-            session.setAttribute("캐릭터", c);
-            session.setAttribute("플레이어id", 플레이어id);
+            result = "캐릭터 생성 성공";
+            charInfo = "이름: " + c.getName()
+                     + " | 직업: " + c.getJob()
+                     + " | 레벨: " + c.getLevel()
+                     + " | HP: " + c.getHp()
+                     + " | 공격력: " + (int) c.getAttack();
+            session.setAttribute("character", c);
+            session.setAttribute("playerId", playerId);
         } else {
-            결과 = "캐릭터 생성 실패: 플레이어 인증 오류 (id는 hero 만 허용)";
+            result = "캐릭터 생성 실패: 플레이어 인증 오류 (ID는 hero 만 허용)";
         }
     }
 %>
@@ -45,16 +44,16 @@
     <table>
         <tr>
             <td>플레이어 ID</td>
-            <td><input type="text" name="플레이어id" value="hero" /></td>
+            <td><input type="text" name="playerId" value="hero" /></td>
         </tr>
         <tr>
             <td>캐릭터명</td>
-            <td><input type="text" name="캐릭터명" /></td>
+            <td><input type="text" name="charName" /></td>
         </tr>
         <tr>
             <td>직업</td>
             <td>
-                <select name="직업">
+                <select name="job">
                     <option value="전사">전사</option>
                     <option value="마법사">마법사</option>
                 </select>
@@ -62,7 +61,7 @@
         </tr>
         <tr>
             <td>레벨</td>
-            <td><input type="number" name="레벨" value="10" min="1" /></td>
+            <td><input type="number" name="level" value="10" min="1" /></td>
         </tr>
     </table>
     <br>
@@ -71,20 +70,14 @@
 
 <hr>
 
-<%
-    if (결과 != null) {
-%>
-<p><b>결과:</b> <%= 결과 %></p>
-<%
-        if (캐릭터정보 != null) {
-%>
-<p><b>캐릭터 정보:</b> <%= 캐릭터정보 %></p>
-<br>
-<a href="attackMonster.jsp"><button>몬스터 공격 화면으로 이동</button></a>
-<%
-        }
-    }
-%>
+<% if (result != null) { %>
+    <p><b>결과:</b> <%= result %></p>
+    <% if (charInfo != null) { %>
+        <p><b>캐릭터 정보:</b> <%= charInfo %></p>
+        <br>
+        <a href="attackMonster.jsp"><button>몬스터 공격 화면으로 이동</button></a>
+    <% } %>
+<% } %>
 
 <br><br>
 <a href="index.jsp">← 메인으로</a>

@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.dnf.*" %>
+<%@ page import="com.dnf.Character, com.dnf.Battle, com.dnf.Warrior, com.dnf.Mage, com.dnf.Player" %>
 <%
-    캐릭터 c          = (캐릭터) session.getAttribute("캐릭터");
-    String 플레이어id = (String) session.getAttribute("플레이어id");
-    String 결과       = null;
+    Character c    = (Character) session.getAttribute("character");
+    String playerId = (String) session.getAttribute("playerId");
+    String result   = null;
 
     if (c == null) {
         response.sendRedirect("createCharacter.jsp");
@@ -11,8 +11,8 @@
     }
 
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        전투 전투obj = new 전투();
-        결과 = 전투obj.몬스터공격(플레이어id, c);
+        Battle battle = new Battle();
+        result = battle.attackMonster(playerId, c);
     }
 %>
 <!DOCTYPE html>
@@ -25,12 +25,12 @@
 <h2>[ 몬스터 공격 ]</h2>
 <hr>
 
-<p><b>플레이어 ID:</b> <%= 플레이어id %></p>
-<p><b>캐릭터명:</b> <%= c.get캐릭터명() %></p>
-<p><b>직업:</b> <%= c.get직업() %></p>
-<p><b>레벨:</b> <%= c.get레벨() %></p>
-<p><b>HP:</b> <%= c.getHP() %></p>
-<p><b>공격력:</b> <%= (int) c.get공격력() %></p>
+<p><b>플레이어 ID:</b> <%= playerId %></p>
+<p><b>캐릭터명:</b> <%= c.getName() %></p>
+<p><b>직업:</b> <%= c.getJob() %></p>
+<p><b>레벨:</b> <%= c.getLevel() %></p>
+<p><b>HP:</b> <%= c.getHp() %></p>
+<p><b>공격력:</b> <%= (int) c.getAttack() %></p>
 
 <hr>
 
@@ -40,13 +40,9 @@
 
 <hr>
 
-<%
-    if (결과 != null) {
-%>
-<p><b>공격 결과:</b> <%= 결과 %></p>
-<%
-    }
-%>
+<% if (result != null) { %>
+    <p><b>공격 결과:</b> <%= result %></p>
+<% } %>
 
 <br>
 <a href="createCharacter.jsp">← 캐릭터 생성으로</a>
