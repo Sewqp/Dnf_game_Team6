@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.dnf.Character, com.dnf.Battle, com.dnf.Warrior, com.dnf.Mage, com.dnf.Player" %>
+<%@ page import="com.dnf.*" %>
 <%
     String result = null;
     String charInfo = null;
@@ -13,16 +13,16 @@
         int level = 1;
         try { level = Integer.parseInt(levelStr); } catch (Exception e) {}
 
-        Battle battle = new Battle();
-        Character c = battle.createCharacter(playerId, charName, job, level);
+        전투 battle = new 전투();
+        캐릭터 c = battle.캐릭터생성(playerId, charName, job, level);
 
         if (c != null) {
             result = "캐릭터 생성 성공";
-            charInfo = "이름: " + c.getName()
-                     + " | 직업: " + c.getJob()
-                     + " | 레벨: " + c.getLevel()
-                     + " | HP: " + c.getHp()
-                     + " | 공격력: " + (int) c.getAttack();
+            charInfo = "이름: " + c.get캐릭터명()
+                     + " | 직업: " + c.get직업()
+                     + " | 레벨: " + c.get레벨()
+                     + " | HP: " + c.getHP()
+                     + " | 공격력: " + (int) c.get공격력();
             session.setAttribute("character", c);
             session.setAttribute("playerId", playerId);
         } else {
